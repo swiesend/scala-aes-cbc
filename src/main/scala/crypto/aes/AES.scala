@@ -19,8 +19,7 @@ object AES {
 
   def encrypt(decrypted: String, password: String, salt: String, instance: String): String = {
     val key = (salt + password).sha256.bytes
-    // we take only 128 bit of the key
-    val keyspec = new SecretKeySpec(key.take(16), "AES");
+    val keyspec = new SecretKeySpec(key, "AES");
 
     val iv = new Array[Byte](16);
     val ivspec = new IvParameterSpec(iv);
@@ -29,7 +28,7 @@ object AES {
     val cipher = Cipher.getInstance(instance);
     cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
     val utf8 = decrypted.getBytes("UTF-8")
-    val encrypted = cipher.doFinal(pkcs5Pad(utf8 ++ utf8.md5.bytes));
+    val encrypted = cipher.doFinal(pkcs5Pad(utf8 ++ utf8.md5.hex.getBytes("UTF-8")));
 
     val encBase64 = Base64.encodeBase64(encrypted);
     new String(ivBase64 ++ encBase64, "UTF-8")
@@ -37,26 +36,26 @@ object AES {
 
   def decrypt(encrypted: String, password: String, salt: String, instance: String): String = {
     val key = (salt + password).sha256.bytes
-    // we take only 128 bit of the key
-    val keyspec = new SecretKeySpec(key.take(16), "AES");
+    val keyspec = new SecretKeySpec(key, "AES");
 
     val iv = Base64.decodeBase64(encrypted.take(22) + "==");
     val ivspec = new IvParameterSpec(iv);
-
-    val cipher = Cipher.getInstance(instance);
-    cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
+    
     val decoded = Base64.decodeBase64(encrypted.substring(22, encrypted.length()))
-    val decrypted = pkcs5Unpad(cipher.doFinal(decoded))
+    val cipher = Cipher.getInstance(instance);
+    cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);    
+    val dec = cipher.doFinal(decoded)
+    val decrypted = pkcs5Unpad(dec)
 
-    val message = decrypted.take(decrypted.length - 16)
-    val md5 = decrypted.takeRight(16)
+    val message = decrypted.take(decrypted.length - 32)
+    val md5 = decrypted.takeRight(32)
 
-    if (new String(message.md5.bytes, "UTF-8") != new String(md5, "UTF-8")) {
+    if (message.md5.hex != new String(md5, "UTF-8")) {
       throw new Exception("[error][" + this.getClass().getName() + "] " +
         "Message could not be decrypted correctly.\n" +
         "\tMessage: \"" + new String(message, "UTF-8") + "\"\n" +
         "Hashes are not equal.\n" +
-        "\tGenerated hash: " + stringOf(message.md5.bytes) + "\n" +
+        "\tGenerated hash: " + stringOf(message.md5.hex) + "\n" +
         "\tExpected hash:  " + stringOf(md5) + "\n" +
         "\tGenerated HEX:  " + stringOf(message.md5.bytes.map(_.toHexString)) + "\"\n" +
         "\tExpected HEX:   " + stringOf(md5.map(_.toHexString)) + "\"\n");
