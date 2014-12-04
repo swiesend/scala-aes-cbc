@@ -18,8 +18,8 @@ object AES {
   val InstanceNoPadding = "AES/CBC/NoPadding"
 
   def encrypt(decrypted: String, password: String, salt: String, instance: String): String = {
-    // we create the key as with 128 bit
     val key = (salt + password).sha256.bytes
+    // we take only 128 bit of the key
     val keyspec = new SecretKeySpec(key.take(16), "AES");
 
     val iv = new Array[Byte](16);
@@ -37,7 +37,7 @@ object AES {
 
   def decrypt(encrypted: String, password: String, salt: String, instance: String): String = {
     val key = (salt + password).sha256.bytes
-
+    // we take only 128 bit of the key
     val keyspec = new SecretKeySpec(key.take(16), "AES");
 
     val iv = Base64.decodeBase64(encrypted.take(22) + "==");
@@ -47,6 +47,7 @@ object AES {
     cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
     val decoded = Base64.decodeBase64(encrypted.substring(22, encrypted.length()))
     val decrypted = pkcs5Unpad(cipher.doFinal(decoded))
+
     val message = decrypted.take(decrypted.length - 16)
     val md5 = decrypted.takeRight(16)
 
