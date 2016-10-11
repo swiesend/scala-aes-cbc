@@ -17,7 +17,7 @@ object AES {
   val InstancePKCS5Padding = "AES/CBC/PKCS5Padding"
   val InstanceNoPadding = "AES/CBC/NoPadding"
 
-  def encrypt(decrypted: String, password: String, salt: String, instance: String): String = {
+  def encrypt(decrypted: String, password: String, salt: String, instance: String = InstancePKCS5Padding): String = {
     val key = (salt + password).sha256.bytes
     val keyspec = new SecretKeySpec(key, "AES");
 
@@ -40,10 +40,10 @@ object AES {
 
     val iv = Base64.decodeBase64(encrypted.take(22) + "==");
     val ivspec = new IvParameterSpec(iv);
-    
+
     val decoded = Base64.decodeBase64(encrypted.substring(22, encrypted.length()))
     val cipher = Cipher.getInstance(instance);
-    cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);    
+    cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
     val dec = cipher.doFinal(decoded)
     val decrypted = pkcs5Unpad(dec)
 
@@ -54,11 +54,11 @@ object AES {
       throw new Exception("[error][" + this.getClass().getName() + "] " +
         "Message could not be decrypted correctly.\n" +
         "\tMessage: \"" + new String(message, "UTF-8") + "\"\n" +
-        "Hashes are not equal.\n" +
+        "The provided hashes are not equal:\n" +
         "\tGenerated hash: " + stringOf(message.md5.hex) + "\n" +
-        "\tExpected hash:  " + stringOf(md5) + "\n" +
+        "\tExpected  hash: " + stringOf(md5) + "\n" +
         "\tGenerated HEX:  " + stringOf(message.md5.bytes.map(_.toHexString)) + "\"\n" +
-        "\tExpected HEX:   " + stringOf(md5.map(_.toHexString)) + "\"\n");
+        "\tExpected  HEX:  " + stringOf(md5.map(_.toHexString)) + "\"\n");
     }
     new String(message, "UTF-8")
   }
@@ -76,4 +76,3 @@ object AES {
     input.take(length - padByte)
   }
 }
-
