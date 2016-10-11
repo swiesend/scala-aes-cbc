@@ -34,7 +34,7 @@ object AES {
     new String(ivBase64 ++ encBase64, "UTF-8")
   }
 
-  def decrypt(encrypted: String, password: String, salt: String, instance: String): String = {
+  def decrypt(encrypted: String, password: String, salt: String, instance: String = InstancePKCS5Padding): String = {
     val key = (salt + password).sha256.bytes
     val keyspec = new SecretKeySpec(key, "AES");
 
