@@ -38,6 +38,10 @@ For building a fat jar do:
 
 # Develop
 
+## Useage
+
+For an example usage review [AESTest.scala](scala-aes-cbc/src/test/scala/crypto/aes/AESTest.scala).
+
 ## Testing
 
 You can test the everything by simple running:
@@ -49,9 +53,9 @@ sbt test
 
 ## Padding
 
-You can either use PKCS5 padding or no padding at all.
+You can either use PKCS5 padding or no padding at all. The functions `encrypt` and `decrypt` assume a PKCS5 padding by default.
 
-Chose one of the provided Strings in [AES.scala](src/main/scala/crypto/aes/AES.scala) for cipher instance (`javax.crypto.Cipher`):
+Chose one of the provided Strings in [AES.scala](scala-aes-cbc/src/main/scala/crypto/aes/AES.scala) for cipher instance (`javax.crypto.Cipher`):
 
     "AES/CBC/PKCS5Padding"
     "AES/CBC/NoPadding"
@@ -59,7 +63,7 @@ Chose one of the provided Strings in [AES.scala](src/main/scala/crypto/aes/AES.s
 
 ## Problems
 
-If you get the following exception during the tests, than this is caused by the JVM Security policy which by default just allows 128 bit encryption ciphers. As you can see in [AES.scala](src/main/scala/crypto/aes/AES.scala) we use a SHA-256.
+If you get the following exception during the tests, than this is caused by the JVM Security policy which by default just allows 128 bit encryption ciphers. As you can see in [AES.scala](scala-aes-cbc/src/main/scala/crypto/aes/AES.scala) we use a SHA-256.
 
 ```java
 java.security.InvalidKeyException: Illegal key size
