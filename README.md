@@ -73,4 +73,4 @@ http://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-def
 
 ## Contribute
 
-If you want to make this better, just fork the project pull a change request. Every help is welcome.
+If you want to make this better, just fork the project and push a change request. Every help is welcome.
