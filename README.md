@@ -37,3 +37,21 @@ Chose one of the provided Strings for the Padding instance:
     "AES/CBC/PKCS5Padding"
     
     "AES/CBC/NoPadding"
+
+## Problems
+
+If get the following Exception during the testing, than this is caused by the JVM Security policy which by default just allows 128Bit Encryption cyphers. As you can see in [AES.scala](src/main/scala/crypto/aes/AES.scala) we use a SHA-256.
+
+```java
+java.security.InvalidKeyException: Illegal key size
+```
+
+There are two ways to get around this, but both are clunky:
+
+1. Lower to 128 bit
+2. Download and install the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy", but this only solves the problem on that machine
+
+For futher discussion on this review:
+
+http://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-default-parameters
+
