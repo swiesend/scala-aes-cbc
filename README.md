@@ -1,7 +1,7 @@
 scala-aes-cbc
 =============
 
-This project provides a simple wrapper API for AES CBC Encryption made with Scala/Java.
+This project provides a simple wrapper API for AES CBC (Symmetric Encryption) made with Scala/Java.
 
 The provided algorihm is also compatible to the PHP encryption function [`mcrypt-encrypt`](http://php.net/manual/de/function.mcrypt-encrypt.php) and takes care also care of the padding.
 
