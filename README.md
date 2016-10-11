@@ -3,7 +3,7 @@ scala-aes-cbc
 
 This project provides a simple wrapper API for AES CBC (Symmetric Encryption) made with Scala/Java.
 
-The provided algorihm is also compatible to the PHP encryption function [`mcrypt-encrypt`](http://php.net/manual/de/function.mcrypt-encrypt.php) and takes care also care of padding.
+The provided algorihm is also compatible to the PHP encryption function [`mcrypt-encrypt`](http://php.net/manual/de/function.mcrypt-encrypt.php) and can handle padding.
 
 > By the way you most likely do not want to use AES with [ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29) block cipher mode - tl;dr: just don't do it.
 
