@@ -7,6 +7,7 @@ The provided algorihm is also compatible to the PHP encryption function [`mcrypt
 
 > By the way you most likely do not want to use AES with [ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29) block cipher mode - tl;dr: just don't do it.
 
+
 # Getting started
 
 Just download the repository and build it with the [SimpleBuildTool (SBT)](http://www.scala-sbt.org/download.html) for Scala. Make sure that you have `git` and `sbt` installed.
@@ -18,6 +19,7 @@ cd scala-aes-cbc
 # fetch all dependencies; this can take a while...
 sbt update
 ```
+
 
 # Deploy
 
@@ -32,6 +34,7 @@ For building a fat jar do:
     sbt assembly
 
 >  Review [sbt-assembly](https://github.com/sbt/sbt-assembly) for further information, if this should fail.
+
 
 # Develop
 
@@ -53,9 +56,10 @@ Chose one of the provided Strings in [AES.scala](src/main/scala/crypto/aes/AES.s
     "AES/CBC/PKCS5Padding"
     "AES/CBC/NoPadding"
 
+
 ## Problems
 
-If get the following Exception during the testing, than this is caused by the JVM Security policy which by default just allows 128Bit Encryption ciphers. As you can see in [AES.scala](src/main/scala/crypto/aes/AES.scala) we use a SHA-256.
+If you get the following exception during the tests, than this is caused by the JVM Security policy which by default just allows 128 bit encryption ciphers. As you can see in [AES.scala](src/main/scala/crypto/aes/AES.scala) we use a SHA-256.
 
 ```java
 java.security.InvalidKeyException: Illegal key size
@@ -69,6 +73,8 @@ There are two ways to get around this, but both are clunky:
 For futher discussion on this review:
 
 http://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-default-parameters
+
+> If you know a better solution, please let me know.
 
 
 ## Contribute
