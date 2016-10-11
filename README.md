@@ -9,11 +9,14 @@ The provided algorihm is also compatible to the PHP encryption function [`mcrypt
 
 Just download the repository and build it with the SimpleBuildTool (SBT) for Scala.
 
-    git clone https://github.com/swiesend/scala-aes-cbc.git
-    cd scala-aes-cbc
+```bash
+git clone https://github.com/swiesend/scala-aes-cbc.git
+cd scala-aes-cbc
     
-    # fetch all dependencies
-    sbt update
+# fetch all dependencies
+sbt update
+```
+    
 
 You can even export a jar or a "fat" jar of the project to use it as library.
 
