@@ -14,7 +14,7 @@ import org.apache.commons.codec.binary.Base64
 import org.apache.commons.codec.binary.Hex
 
 object Instance {
-  def getAlgorithm(s: String) = """(.*?)\/""".r.findFirstMatchIn(s).get.group(1)
+  def getAlgorithm(s: String): String = """(.*?)\/""".r.findFirstMatchIn(s).get.group(1)
 }
 
 object AES {
