@@ -1,19 +1,21 @@
 name := "scala-aes-cbc"
 
-version := "0.0"
+version := "0.1.0"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.8"
 
+//
+// Hasher dep + resolver
+//
 resolvers ++= Seq(
     "RoundEights" at "http://maven.spikemark.net/roundeights"
 )
+libraryDependencies += "com.roundeights" %% "hasher" % "1.0.0"
 
+//
+// Common utils
+//
 libraryDependencies ++= Seq(
-    "com.roundeights" %% "hasher" % "1.0.0"
+  "org.scalatest" % "scalatest_2.11" % "3.0.0",
+  "commons-codec" % "commons-codec" % "1.10"
 )
-
-libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.2"
-
-//libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.3.2"
-
-libraryDependencies += "commons-codec" % "commons-codec" % "1.10"
