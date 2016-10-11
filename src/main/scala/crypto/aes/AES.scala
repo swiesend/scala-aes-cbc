@@ -13,8 +13,12 @@ import javax.crypto.spec.SecretKeySpec
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.codec.binary.Hex
 
-object Instance {
-  def getAlgorithm(s: String): String = """(.*?)\/""".r.findFirstMatchIn(s).get.group(1)
+object Salt {
+  def next(length: Int = 32): String = {
+    val bytes = new Array[Byte](length)
+    Random.nextBytes(bytes)
+    new String(bytes)
+  }
 }
 
 object AES {
@@ -22,12 +26,12 @@ object AES {
   val InstancePKCS5Padding = "AES/CBC/PKCS5Padding"
   val InstanceNoPadding = "AES/CBC/NoPadding"
 
-  def encrypt(decrypted: String, password: String, salt: String, instance: String = InstanceNoPadding): String = {
+  def encrypt(decrypted: String, password: String, salt: String, instance: String = InstancePKCS5Padding): String = {
 
     val SHA256 = MessageDigest.getInstance("SHA-256")
     SHA256.update((salt + password).getBytes())
     val key = SHA256.digest()
-    val keyspec = new SecretKeySpec(key, Instance.getAlgorithm(instance))
+    val keyspec = new SecretKeySpec(key, getAlgorithm(instance))
 
 
     var iv = new Array[Byte](16)
@@ -48,12 +52,12 @@ object AES {
     new String(ivBase64 ++ encBase64, "UTF-8")
   }
 
-  def decrypt(encrypted: String, password: String, salt: String, instance: String = InstanceNoPadding): String = {
+  def decrypt(encrypted: String, password: String, salt: String, instance: String = InstancePKCS5Padding): String = {
 
     val messageDigest = MessageDigest.getInstance("SHA-256")
     messageDigest.update((salt + password).getBytes())
     val key = messageDigest.digest()
-    val keyspec = new SecretKeySpec(key, Instance.getAlgorithm(instance));
+    val keyspec = new SecretKeySpec(key, getAlgorithm(instance));
 
     val iv = Base64.decodeBase64(encrypted.take(22) + "==");
     val ivspec = new IvParameterSpec(iv);
@@ -94,4 +98,6 @@ object AES {
     if (!input.takeRight(padByte).containsSlice(Array.fill[Byte](padByte)(padByte))) throw new Exception("Padding format is not as being expected")
     input.take(length - padByte)
   }
+
+  private def getAlgorithm(s: String): String = """(.*?)\/""".r.findFirstMatchIn(s).get.group(1)
 }

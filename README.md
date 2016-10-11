@@ -19,7 +19,29 @@ cd scala-aes-cbc
 # fetch all dependencies; this can take a while...
 sbt update
 ```
+## Usage
 
+```scala
+import crypto.aes.{AES, Salt}
+
+// We start with a strong password
+val password = "a strong passphrase is important for symmetric encryption"
+
+// Nonetheless we generate a salt on a per user base. This salt
+// should not be exposed (as it functions more like a pepper).
+val salt = Salt.next(42)
+
+// And of course you have something to encrypt
+val data = "Lorem ipsum dolor sit amet"
+
+// Now we have all we need
+val encrypted = AES.encrypt(data, password, salt)
+val decrypted = AES.decrypt(encrypted, password, salt)
+
+assert(data == decrypted)
+```
+
+> For further examples review [AESTest.scala](src/test/scala/crypto/aes/AESTest.scala).
 
 # Deploy
 
@@ -38,9 +60,6 @@ For building a fat jar do:
 
 # Develop
 
-## Useage
-
-For an example usage review [AESTest.scala](src/test/scala/crypto/aes/AESTest.scala).
 
 ## Testing
 
@@ -51,7 +70,7 @@ You can test the everything by simple running:
 sbt test
 ```
 
-## Padding
+## Algorithm / Cipher / Padding
 
 You can either use PKCS5 padding or no padding at all. The functions `encrypt` and `decrypt` assume a PKCS5 padding by default.
 

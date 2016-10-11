@@ -3,10 +3,31 @@ package crypto.aes
 import scalatest.UnitSpec
 import scala.util.Random
 
+object Helper {
+  def randomPrintableChars(length: Int): Array[Char] = Array.fill(length)(Random.nextPrintableChar)
+  def randomPrintableString(length: Int): String = new String(randomPrintableChars(length))
+}
+
 class AESTest extends UnitSpec {
 
-  def randomStringArray(length: Int) = {
-    new String(Array.fill(length)(Random.nextPrintableChar))
+  "Useage Example" should "work" in {
+    import crypto.aes.{AES, Salt}
+
+    // We start with a strong password
+    val password = "a strong passphrase is important for symmetric encryption"
+
+    // Nonetheless we generate a salt on a per user base. This salt
+    // should not be exposed (as it functions more like a pepper).
+    val salt = Salt.next(42)
+
+    // And of course you have something to encrypt
+    val data = "Lorem ipsum dolor sit amet"
+
+    // Now we have all we need
+    val encrypted = AES.encrypt(data, password, salt)
+    val decrypted = AES.decrypt(encrypted, password, salt)
+
+    assert(data == decrypted)
   }
 
   "AES/CBC/NoPadding ASCII encryption" should "work" in {
@@ -35,7 +56,7 @@ class AESTest extends UnitSpec {
     val password = "123"
     val salt = "123"
     val size = Random.nextInt(20); println(size);
-    val str = randomStringArray(size); println(str);
+    val str = Helper.randomPrintableString(size); println(str);
 
     val enc = AES.encrypt(str, password, salt, AES.InstanceNoPadding); println(enc);
     val dec = AES.decrypt(enc, password, salt, AES.InstanceNoPadding); println(dec);
@@ -69,7 +90,7 @@ class AESTest extends UnitSpec {
     val password = "123"
     val salt = "123"
     val size = Random.nextInt(20); println(size);
-    val str = randomStringArray(size); println(str);
+    val str = Helper.randomPrintableString(size); println(str);
 
     val enc = AES.encrypt(str, password, salt, AES.InstancePKCS5Padding); println(enc);
     val dec = AES.decrypt(enc, password, salt, AES.InstancePKCS5Padding); println(dec);
@@ -97,7 +118,7 @@ class AESTest extends UnitSpec {
 
   "padding random String" should "work" in {
     val size = Random.nextInt(20); println(size);
-    val str = randomStringArray(size); println(str);
+    val str = Helper.randomPrintableString(size); println(str);
 
     val padded = AES.pkcs5Pad(str.getBytes("UTF-8")); println(new String(padded));
     val unpadded = AES.pkcs5Unpad(padded); println(unpadded);
