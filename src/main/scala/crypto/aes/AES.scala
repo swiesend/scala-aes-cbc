@@ -2,6 +2,7 @@ package crypto.aes
 
 import scala.language.postfixOps
 import scala.runtime.ScalaRunTime.stringOf
+import scala.util.Random
 
 import java.security.MessageDigest
 
@@ -28,7 +29,9 @@ object AES {
     val key = SHA256.digest()
     val keyspec = new SecretKeySpec(key, Instance.getAlgorithm(instance))
 
-    val iv = new Array[Byte](16)
+
+    var iv = new Array[Byte](16)
+    Random.nextBytes(iv)
     val ivspec = new IvParameterSpec(iv)
     val ivBase64 = Base64.encodeBase64(iv).filterNot("=".toSet)
 

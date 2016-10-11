@@ -6,11 +6,7 @@ import scala.util.Random
 class AESTest extends UnitSpec {
 
   def randomStringArray(length: Int) = {
-    val a: Array[Char] = new Array[Char](length)
-    for (i <- 0 until length) {
-      a(i) = Random.nextPrintableChar
-    }
-    new String(a)
+    new String(Array.fill(length)(Random.nextPrintableChar))
   }
 
   "AES/CBC/NoPadding ASCII encryption" should "work" in {
@@ -27,7 +23,7 @@ class AESTest extends UnitSpec {
   "AES/CBC/NoPadding UTF-8 encryption" should "work" in {
     val password = "123"
     val salt = "123"
-    val str = "Hælló World"; print(str);
+    val str = "Hælló World"; println(str);
 
     val enc = AES.encrypt(str, password, salt, AES.InstanceNoPadding); println(enc);
     val dec = AES.decrypt(enc, password, salt, AES.InstanceNoPadding); println(dec);
