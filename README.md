@@ -11,7 +11,9 @@ Just download the repository and build it with the SimpleBuildTool (SBT) for Sca
 
     git clone https://github.com/swiesend/scala-aes-cbc.git
     cd scala-aes-cbc
-    sbt
+    
+    # fetch all dependencies
+    sbt update
 
 You can even export a jar or a "fat" jar of the project to use it as library.
 
