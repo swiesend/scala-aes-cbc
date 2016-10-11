@@ -23,13 +23,15 @@ sbt update
 
 You can export a jar or even a fat jar (with all dependencies included) of the project to use it as library.
 
-For building a jar review:
+Deploying a jar:
 
     sbt package
 
-For building a fat jar review [sbt-assembly](https://github.com/sbt/sbt-assembly):
+For building a fat jar do:
 
     sbt assembly
+
+>  Review [sbt-assembly](https://github.com/sbt/sbt-assembly) for further information, if this should fail.
 
 # Develop
 
