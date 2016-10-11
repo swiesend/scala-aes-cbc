@@ -60,10 +60,6 @@ Chose one of the provided Strings in [AES.scala](src/main/scala/crypto/aes/AES.s
     "AES/CBC/PKCS5Padding"
     "AES/CBC/NoPadding"
 
-You can also switch to easily from AES to DES by providing another cipher string e.g.:
-
-    "DES/CBC/PKCS5Padding"
-
 > NOTE: For further Ciphers review: https://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html
 
 ## Problems

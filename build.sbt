@@ -5,14 +5,6 @@ version := "0.1.0"
 scalaVersion := "2.11.8"
 
 //
-// Hasher dep + resolver
-//
-resolvers ++= Seq(
-    "RoundEights" at "http://maven.spikemark.net/roundeights"
-)
-libraryDependencies += "com.roundeights" %% "hasher" % "1.0.0"
-
-//
 // Common utils
 //
 libraryDependencies ++= Seq(
