@@ -16,17 +16,29 @@ cd scala-aes-cbc
 # fetch all dependencies
 sbt update
 ```
-    
 
-You can even export a jar or a "fat" jar of the project to use it as library.
+# Deploy
+
+You can export a jar or even a "fat" jar of the project to use it as library.
 
 For building a jar review:
 
     sbt package
     
-For building a "fat" jar with all dependencies included review:
+For building a "fat" jar (with all dependencies included) review:
 
 * [sbt-assembly](https://github.com/sbt/sbt-assembly)
+
+# Develop
+
+## Testing
+
+You can test the everything by simple running:
+
+```bash
+# test the module
+sbt test
+```
 
 ## Padding
 
@@ -38,7 +50,7 @@ Chose one of the provided Strings for the Padding instance:
     
     "AES/CBC/NoPadding"
 
-## Problems
+##Problems
 
 If get the following Exception during the testing, than this is caused by the JVM Security policy which by default just allows 128Bit Encryption cyphers. As you can see in [AES.scala](src/main/scala/crypto/aes/AES.scala) we use a SHA-256.
 
