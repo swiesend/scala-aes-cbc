@@ -10,7 +10,7 @@ object Helper {
 
 class AESTest extends UnitSpec {
 
-  "Useage Example" should "work" in {
+  "Usage Example" should "work" in {
     import crypto.aes.{AES, Salt}
 
     // We start with a strong password
