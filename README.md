@@ -5,11 +5,11 @@ This project provides a simple wrapper API for AES CBC (Symmetric Encryption) ma
 
 The provided algorihm is also compatible to the PHP encryption function [`mcrypt-encrypt`](http://php.net/manual/de/function.mcrypt-encrypt.php) and takes care also care of padding.
 
-> By the way you most likly do not want to use AES with [ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29) block cipher mode - tl;dr: just don't do it.
+> By the way you most likely do not want to use AES with [ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29) block cipher mode - tl;dr: just don't do it.
 
 # Getting started
 
-Just download the repository and build it with the SimpleBuildTool (SBT) for Scala.
+Just download the repository and build it with the [SimpleBuildTool (SBT)](http://www.scala-sbt.org/download.html) for Scala. Make sure that you have `git` and `sbt` installed.
 
 ```bash
 git clone https://github.com/swiesend/scala-aes-cbc.git
