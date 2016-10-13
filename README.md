@@ -7,6 +7,7 @@ The provided algorithm is also compatible to the PHP encryption function [`mcryp
 
 > By the way you most likely do not want to use AES with [ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29) block cipher mode - tl;dr: just don't do it.
 
+**Disclaimer:** Do not use this code in production or with any sensitive data, as I can't gurantee the correctness of the provided implementation. I am not a professional security researcher. Furthermore applies the given MIT License.
 
 # Getting started
 
