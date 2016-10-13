@@ -105,3 +105,10 @@ http://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-def
 ## Contribute
 
 If you want to make this better, just fork the project and push a change request. Every help is welcome.
+
+### ToDo
+
+* init the cipher with the init method
+* generating secure random numbers
+* cachting Exceptions
+
