@@ -110,5 +110,5 @@ If you want to make this better, just fork the project and push a change request
 
 * init the cipher with the init method
 * generating secure random numbers
-* cachting Exceptions
+* catching Exceptions
 
