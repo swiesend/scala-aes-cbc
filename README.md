@@ -112,3 +112,7 @@ If you want to make this better, just fork the project and push a change request
 * generating secure random numbers
 * catching Exceptions
 
+This seems to be a good implementation:
+
+see: http://dignicate.com/archives/788
+
