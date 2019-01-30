@@ -1,6 +1,9 @@
 package crypto.aes
 
+import java.nio.charset.StandardCharsets
+
 import scalatest.UnitSpec
+
 import scala.util.Random
 
 object Helper {
@@ -101,29 +104,29 @@ class AESTest extends UnitSpec {
   "padding ASCII" should "work" in {
     val str = "Hello World"; println(str);
 
-    val padded = AES.pkcs5Pad(str.getBytes("UTF-8")); println(new String(padded));
-    val unpadded = AES.pkcs5Unpad(padded); println(unpadded);
+    val padded = AES.padPKCS5(str.getBytes(StandardCharsets.UTF_8)); println(new String(padded));
+    val unpadded = AES.unpadPKCS5(padded); println(unpadded);
 
-    assert(str == new String(unpadded, "UTF-8"))
+    assert(str == new String(unpadded, StandardCharsets.UTF_8))
   }
 
   "padding UTF-8" should "work" in {
     val str = "Hælló World"; println(str);
 
-    val padded = AES.pkcs5Pad(str.getBytes("UTF-8")); println(new String(padded));
-    val unpadded = AES.pkcs5Unpad(padded); println(unpadded);
+    val padded = AES.padPKCS5(str.getBytes(StandardCharsets.UTF_8)); println(new String(padded));
+    val unpadded = AES.unpadPKCS5(padded); println(unpadded);
 
-    assert(str == new String(unpadded, "UTF-8"))
+    assert(str == new String(unpadded, StandardCharsets.UTF_8))
   }
 
   "padding random String" should "work" in {
     val size = Random.nextInt(20); println(size);
     val str = Helper.randomPrintableString(size); println(str);
 
-    val padded = AES.pkcs5Pad(str.getBytes("UTF-8")); println(new String(padded));
-    val unpadded = AES.pkcs5Unpad(padded); println(unpadded);
+    val padded = AES.padPKCS5(str.getBytes(StandardCharsets.UTF_8)); println(new String(padded));
+    val unpadded = AES.unpadPKCS5(padded); println(unpadded);
 
-    assert(str == new String(unpadded, "UTF-8"))
+    assert(str == new String(unpadded, StandardCharsets.UTF_8))
   }
 
 }

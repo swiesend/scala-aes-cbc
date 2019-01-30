@@ -1,24 +1,32 @@
 package crypto.aes
 
-import scala.language.postfixOps
-import scala.runtime.ScalaRunTime.stringOf
-import scala.util.Random
-
-import java.security.MessageDigest
+import java.nio.charset.StandardCharsets
+import java.security.{MessageDigest, SecureRandom}
 
 import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
+import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
+import org.apache.commons.codec.binary.{Base64, Hex}
 
-import org.apache.commons.codec.binary.Base64
-import org.apache.commons.codec.binary.Hex
+import scala.language.postfixOps
+import scala.runtime.ScalaRunTime.stringOf
+
+object Secure {
+
+  def nextBytes(length: Int = 16): Array[Byte] = {
+    val bytes = new Array[Byte](length)
+    val random: SecureRandom = SecureRandom.getInstance("SHA1PRNG")
+    random.nextBytes(bytes)
+    bytes
+  }
+
+}
 
 object Salt {
+
   def next(length: Int = 32): String = {
-    val bytes = new Array[Byte](length)
-    Random.nextBytes(bytes)
-    new String(bytes)
+    new String(Secure.nextBytes(length))
   }
+
 }
 
 object AES {
@@ -33,23 +41,21 @@ object AES {
     val key = SHA256.digest()
     val keyspec = new SecretKeySpec(key, getAlgorithm(instance))
 
-
-    var iv = new Array[Byte](16)
-    Random.nextBytes(iv)
+    val iv = Secure.nextBytes(16)
     val ivspec = new IvParameterSpec(iv)
     val ivBase64 = Base64.encodeBase64(iv).filterNot("=".toSet)
 
     val cipher = Cipher.getInstance(instance)
     cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec)
-    val utf8 = decrypted.getBytes("UTF-8")
+    val utf8 = decrypted.getBytes(StandardCharsets.UTF_8)
     val MD5 = MessageDigest.getInstance("MD5")
     MD5.update(utf8)
-    val encrypted = cipher.doFinal(
-      pkcs5Pad(utf8 ++ new String(Hex.encodeHex(MD5.digest())).getBytes("UTF-8"))
-    )
+
+    val padded = padPKCS5(utf8 ++ new String(Hex.encodeHex(MD5.digest())).getBytes(StandardCharsets.UTF_8))
+    val encrypted = cipher.doFinal(padded)
 
     val encBase64 = Base64.encodeBase64(encrypted)
-    new String(ivBase64 ++ encBase64, "UTF-8")
+    new String(ivBase64 ++ encBase64, StandardCharsets.UTF_8)
   }
 
   def decrypt(encrypted: String, password: String, salt: String, instance: String = InstancePKCS5Padding): String = {
@@ -66,7 +72,7 @@ object AES {
     val cipher = Cipher.getInstance(instance);
     cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
     val dec = cipher.doFinal(decoded)
-    val decrypted = pkcs5Unpad(dec)
+    val decrypted = unpadPKCS5(dec)
 
     val message = decrypted.take(decrypted.length - 32)
     val md5 = decrypted.takeRight(32)
@@ -74,24 +80,24 @@ object AES {
     val MD5 = MessageDigest.getInstance("MD5")
     MD5.update(message)
     val messageHex = new String(Hex.encodeHex(MD5.digest()))
-    if (messageHex != new String(md5, "UTF-8")) {
+    if (messageHex != new String(md5, StandardCharsets.UTF_8)) {
       throw new Exception("[error][" + this.getClass().getName() + "] " +
         "Message could not be decrypted correctly.\n" +
-        "\tMessage: \"" + new String(message, "UTF-8") + "\"\n" +
+        "\tMessage: \"" + new String(message, StandardCharsets.UTF_8) + "\"\n" +
         "The provided hashes are not equal:\n" +
         "\tGenerated hash: " + stringOf(messageHex) + "\n" +
         "\tExpected  hash: " + stringOf(md5) + "\n"
       )
     }
-    new String(message, "UTF-8")
+    new String(message, StandardCharsets.UTF_8)
   }
 
-  def pkcs5Pad(input: Array[Byte], size: Int = 16): Array[Byte] = {
+  def padPKCS5(input: Array[Byte], size: Int = 16): Array[Byte] = {
     val padByte: Int = size - (input.length % size);
     return input ++ Array.fill[Byte](padByte)(padByte.toByte);
   }
 
-  def pkcs5Unpad(input: Array[Byte]): Array[Byte] = {
+  def unpadPKCS5(input: Array[Byte]): Array[Byte] = {
     val padByte = input.last
     val length = input.length
     if (padByte > length) throw new Exception("The input was shorter than the padding byte indicates");
