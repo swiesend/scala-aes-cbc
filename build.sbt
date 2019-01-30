@@ -1,13 +1,12 @@
-name := "scala-aes-cbc"
+ThisBuild / organization := "de.swiesend"
+ThisBuild / scalaVersion := "2.12.8"
+ThisBuild / version      := "0.1.0"
 
-version := "0.1.0"
-
-scalaVersion := "2.11.8"
-
-//
-// Common utils
-//
-libraryDependencies ++= Seq(
-  "org.scalatest" % "scalatest_2.11" % "3.0.0",
-  "commons-codec" % "commons-codec" % "1.10"
-)
+lazy val root = (project in file("."))
+  .settings(
+    name := "scala-aes-cbc",
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.0.5" % Test,
+      "commons-codec" % "commons-codec" % "1.10"
+    ),
+  )
