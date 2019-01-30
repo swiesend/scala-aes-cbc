@@ -35,10 +35,9 @@ object AES {
   val InstanceNoPadding = "AES/CBC/NoPadding"
 
   def encrypt(decrypted: String, password: String, salt: String, instance: String = InstancePKCS5Padding): String = {
-
-    val SHA256 = MessageDigest.getInstance("SHA-256")
-    SHA256.update((salt + password).getBytes())
-    val key = SHA256.digest()
+    val sha256 = MessageDigest.getInstance("SHA-256")
+    sha256.update((salt + password).getBytes())
+    val key = sha256.digest()
     val keyspec = new SecretKeySpec(key, getAlgorithm(instance))
 
     val iv = Secure.nextBytes(16)
@@ -59,10 +58,9 @@ object AES {
   }
 
   def decrypt(encrypted: String, password: String, salt: String, instance: String = InstancePKCS5Padding): String = {
-
-    val messageDigest = MessageDigest.getInstance("SHA-256")
-    messageDigest.update((salt + password).getBytes())
-    val key = messageDigest.digest()
+    val sha256 = MessageDigest.getInstance("SHA-256")
+    sha256.update((salt + password).getBytes())
+    val key = sha256.digest()
     val keyspec = new SecretKeySpec(key, getAlgorithm(instance));
 
     val iv = Base64.decodeBase64(encrypted.take(22) + "==");
