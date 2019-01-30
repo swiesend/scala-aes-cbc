@@ -7,13 +7,13 @@ The provided algorithm is also compatible to the PHP encryption function [`mcryp
 
 > By the way you most likely do not want to use AES with [ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29) block cipher mode - tl;dr: just don't do it.
 
-**Disclaimer:** Do not use this code in production or with any sensitive data, as I can't gurantee the correctness of the provided implementation. I am not a professional security researcher. Furthermore applies the given MIT License.
+**Disclaimer:** Do not use this code in production or with any sensitive data, as I can't gurantee the correctness of the provided implementation. I am not a professional security researcher. Furthermore applies the MIT License.
 
 # Getting started
 
 Just download the repository and build it with the [SimpleBuildTool (SBT)](http://www.scala-sbt.org/download.html) for Scala. Make sure that you have `git` and `sbt` installed.
 
-```bash
+```sh
 git clone https://github.com/swiesend/scala-aes-cbc.git
 cd scala-aes-cbc
 
@@ -46,27 +46,21 @@ assert(data == decrypted)
 
 # Deploy
 
-You can export a jar or even a fat jar (with all dependencies included) of the project to use it as library.
+You can export a jar of the project to use it as library.
 
 Deploying a jar:
 
     sbt package
 
-For building a fat jar do:
-
-    sbt assembly
-
->  Review [sbt-assembly](https://github.com/sbt/sbt-assembly) for further information, if this should fail.
-
-
 # Develop
 
+Any help on the project is welcome.
 
 ## Testing
 
 You can test the everything by simple running:
 
-```bash
+```sh
 # test the module
 sbt test
 ```
@@ -114,5 +108,4 @@ If you want to make this better, just fork the project and push a change request
 
 This seems to be a good implementation:
 
-see: http://dignicate.com/archives/788
-
+see: [http://dignicate.com/archives/788](https://web.archive.org/web/20180411001441/http://dignicate.com/archives/788)
